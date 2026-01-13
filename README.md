@@ -14,7 +14,6 @@ It uses the [Cocktail Database API](https://www.thecocktaildb.com).
   - Category and alcoholic status
   - Ingredients with measurements
   - Preparation instructions
-  - Last modification date
 - **Error Handling**: Graceful error handling when the API is unavailable
 
 ## Prerequisites
@@ -24,7 +23,7 @@ It uses the [Cocktail Database API](https://www.thecocktaildb.com).
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/diegopetrola/CodeReviews.Console.Drinks.DiegoPetrola.git && cd CodeReviews.Console.Drinks.DiegoPetrola`
+1. Clone the repository: `git clone https://github.com/diegopetrola/CodeReviews.Console.Drinks.DiegoPetrola.git`
 2. Restore dependencies: `dotnet restore`
 3. Build the project: `dotnet build`
 
@@ -41,9 +40,9 @@ Run the application: `dotnet run`
 
 ## Technologies Used
 
-- **Spectre.Console**: Rich terminal UI and console formatting
-- **.NET 10**: Modern C# framework
-- **C# 14.0**: Latest language features
+- **Spectre.Console**
+- **.NET 10**
+- **C# 14.0**
 
 ## API Integration
 
