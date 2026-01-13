@@ -41,9 +41,9 @@ Run the application: `dotnet run`
 
 ## Technologies Used
 
-- **Spectre.Console**: Rich terminal UI and console formatting
-- **.NET 10**: Modern C# framework
-- **C# 14.0**: Latest language features
+- **Spectre.Console**
+- **.NET 10**
+- **C# 14.0**
 
 ## API Integration
 
