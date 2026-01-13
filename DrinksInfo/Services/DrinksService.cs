@@ -51,48 +51,40 @@ namespace DrinksInfo.Services
             }
         }
 
-        //internal void GetDrink(string drink)
-        //{
-        //    var client = new RestClient("http://www.thecocktaildb.com/api/json/v1/1/");
-        //    var request = new RestRequest($"lookup.php?i={drink}");
-        //    var response = client.ExecuteAsync(request);
+        internal async Task<DrinkDetail> GetDrink(string drinkId)
+        {
+            var client = new HttpClient { BaseAddress = Url };
+            var response = await client.GetAsync($"lookup.php?i={drinkId}");
 
-        //    if (response.Result.StatusCode == System.Net.HttpStatusCode.OK)
-        //    {
-        //        string rawResponse = response.Result.Content;
+            if (response.IsSuccessStatusCode)
+            {
+                var strResponse = await response.Content.ReadAsStringAsync();
+                var drink = JsonSerializer.Deserialize<DrinkDetailObject>(strResponse).DrinkDetailList;
+                return drink[0];
+                //List<object> prepList = new();
+                //string formattedName = "";
+                //foreach (PropertyInfo prop in drinkDetail.GetType().GetProperties())
+                //{
 
-        //        var serialize = JsonConvert.DeserializeObject<DrinkDetailObject>(rawResponse);
+                //    if (prop.Name.Contains("str"))
+                //    {
+                //        formattedName = prop.Name.Substring(3);
+                //    }
 
-        //        List<DrinkDetail> returnedList = serialize.DrinkDetailList;
-
-        //        DrinkDetail drinkDetail = returnedList[0];
-
-        //        List<object> prepList = new();
-
-        //        string formattedName = "";
-
-        //        foreach (PropertyInfo prop in drinkDetail.GetType().GetProperties())
-        //        {
-
-        //            if (prop.Name.Contains("str"))
-        //            {
-        //                formattedName = prop.Name.Substring(3);
-        //            }
-
-        //            if (!string.IsNullOrEmpty(prop.GetValue(drinkDetail)?.ToString()))
-        //            {
-        //                prepList.Add(new
-        //                {
-        //                    Key = formattedName,
-        //                    Value = prop.GetValue(drinkDetail)
-        //                });
-        //            }
-        //        }
-
-        //        TableVisualisationEngine.ShowTable(prepList, drinkDetail.strDrink);
-
-
-        //    }
-        //}
+                //    if (!string.IsNullOrEmpty(prop.GetValue(drinkDetail)?.ToString()))
+                //    {
+                //        prepList.Add(new
+                //        {
+                //            Key = formattedName,
+                //            Value = prop.GetValue(drinkDetail)
+                //        });
+                //    }
+                //}
+            }
+            else
+            {
+                throw new HttpRequestException("Error on the server, please try again in a few minutes");
+            }
+        }
     }
 }

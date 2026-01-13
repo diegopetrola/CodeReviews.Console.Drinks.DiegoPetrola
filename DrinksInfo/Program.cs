@@ -9,7 +9,6 @@ class Program
     static async Task Main(string[] args)
     {
         IServiceCollection services = new ServiceCollection();
-        //services.AddDbContext<FlashcardContext>();
         services.AddTransient<DrinksService>();
         services.AddTransient<DrinksController>();
         ServiceProvider serviceProvider = services.BuildServiceProvider();

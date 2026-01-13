@@ -2,6 +2,8 @@
 //When the users visualise the drink detail, there shouldn't be any properties with empty values.
 //You should handle errors so that if the API is down, the application doesn't crash.
 
+//Add a stylized main menu in ASCII art and research printing imgs in spectre
+
 using DrinksInfo.Models;
 using DrinksInfo.Services;
 using DrinksInfo.Utils;
@@ -11,6 +13,7 @@ namespace DrinksInfo.Controllers;
 
 internal class DrinksController(DrinksService drinksService)
 {
+    private readonly string logo = "[blue]  ___  ___ ___ _  _ _  _____   ___ _  _ ___ ___  \r\n |   \\| _ \\_ _| \\| | |/ / __| |_ _| \\| | __/ _ \\ \r\n | |) |   /| || .` | ' <\\__ \\  | || .` | _| (_) |\r\n |___/|_|_\\___|_|\\_|_|\\_\\___/ |___|_|\\_|_| \\___/ \r\n                                                 [/]";
     internal readonly DrinksService _drinksService = drinksService;
 
     public async Task CategoryMenuScreen()
@@ -21,6 +24,8 @@ internal class DrinksController(DrinksService drinksService)
             {
                 var categories = await _drinksService.GetCategories();
                 categories.Add(new Category { strCategory = Shared.exitText });
+                AnsiConsole.Clear();
+                AnsiConsole.MarkupLine(logo);
                 var choice = AnsiConsole.Prompt(
                         new SelectionPrompt<Category>()
                             .Title("")
@@ -47,22 +52,72 @@ internal class DrinksController(DrinksService drinksService)
         {
             var drinks = await _drinksService.GetDrinksByCategory(category);
             drinks.Add(new Drink { strDrink = Shared.goBackText });
-
+            AnsiConsole.Clear();
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<Drink>()
                     .Title("")
                     .AddChoices(drinks)
                     .WrapAround(true)
+                    .PageSize(30)
                     .UseConverter(drink => drink.strDrink));
 
             if (choice.strDrink == Shared.goBackText) return;
-            //Todo: show drink
-
+            await DrinkScreen(choice);
         }
         catch (Exception e)
         {
             AnsiConsole.MarkupLine($"[{Styles.error}]Something went wrong[/]: {e.Message}");
             Shared.AskForKey();
         }
+    }
+
+    public async Task DrinkScreen(Drink drink)
+    {
+        try
+        {
+            var drinkDetail = await _drinksService.GetDrink(drink.idDrink);
+            var panel = new Panel(FormatDrinkString(drinkDetail))
+                .Border(BoxBorder.Rounded)
+                .Header(drinkDetail.strDrink);
+
+            panel.Header.Centered();
+            panel.BorderStyle(Color.Blue);
+            AnsiConsole.Clear();
+            AnsiConsole.Write(panel);
+        }
+        catch (Exception e)
+        {
+            AnsiConsole.MarkupLine($"[{Styles.error}]Error[/]: {e.Message}");
+        }
+        Shared.AskForKey();
+    }
+
+    private static string FormatDrinkString(DrinkDetail drink)
+    {
+        var formattedStr = $"""
+            {$"[{Styles.subtle}]Category[/] {drink.strCategory}"}
+
+            [{Styles.subtle}]Alcoholic:[/] [{Styles.warn}]{drink.strAlcoholic}[/] 
+            [{Styles.subtle}]Glass:[/] {drink.strGlass}      {(drink.strIBA is not null && drink.strIBA != "" ? $"[{Styles.subtle}]IBA:[/] {drink.strIBA}" : "")}
+
+            [{Styles.subtle}]Instructions:[/] {drink.strInstructions}
+
+            """;
+
+        for (var i = 1; i < 13; i++)
+        {
+            var ingredientVal = drink.GetType().GetProperty($"strIngredient{i}").GetValue(drink);
+            var measureVal = drink.GetType().GetProperty($"strMeasure{i}").GetValue(drink);
+
+            if (ingredientVal is not null && ingredientVal != "")
+            {
+                formattedStr += $"[{Styles.subtle}]Ingredient[/]: {ingredientVal}" +
+                    $"{(measureVal is not null && measureVal != "" ? $" — {measureVal}" : "")}\n";
+            }
+            else { break; }
+        }
+
+        formattedStr += $"\n[{Styles.subtle}]Date modified:[/] {drink.dateModified}";
+        return formattedStr;
     }
 }
