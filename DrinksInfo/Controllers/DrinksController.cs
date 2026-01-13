@@ -18,7 +18,7 @@ internal class DrinksController(DrinksService drinksService)
             while (true)
             {
                 var categories = await _drinksService.GetCategories();
-                categories.Add(new Category { strCategory = Shared.exitText });
+                categories.Add(new Category { StrCategory = Shared.exitText });
                 AnsiConsole.Clear();
                 AnsiConsole.MarkupLine(logo);
                 var choice = AnsiConsole.Prompt(
@@ -27,10 +27,10 @@ internal class DrinksController(DrinksService drinksService)
                             .AddChoices(categories)
                             .WrapAround(true)
                             .PageSize(30)
-                            .UseConverter(cat => cat.strCategory)
+                            .UseConverter(cat => cat.StrCategory)
                     );
 
-                if (choice.strCategory == Shared.exitText) Environment.Exit(0);
+                if (choice.StrCategory == Shared.exitText) Environment.Exit(0);
                 await DrinksFromCategoryScreen(choice);
             }
         }
@@ -46,7 +46,7 @@ internal class DrinksController(DrinksService drinksService)
         try
         {
             var drinks = await _drinksService.GetDrinksByCategory(category);
-            drinks.Add(new Drink { strDrink = Shared.goBackText });
+            drinks.Add(new Drink { StrDrink = Shared.goBackText });
             AnsiConsole.Clear();
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<Drink>()
@@ -54,9 +54,9 @@ internal class DrinksController(DrinksService drinksService)
                     .AddChoices(drinks)
                     .WrapAround(true)
                     .PageSize(30)
-                    .UseConverter(drink => drink.strDrink));
+                    .UseConverter(drink => drink.StrDrink));
 
-            if (choice.strDrink == Shared.goBackText) return;
+            if (choice.StrDrink == Shared.goBackText) return;
             await DrinkScreen(choice);
         }
         catch (Exception e)
@@ -70,10 +70,10 @@ internal class DrinksController(DrinksService drinksService)
     {
         try
         {
-            var drinkDetail = await _drinksService.GetDrink(drink.idDrink);
+            var drinkDetail = await _drinksService.GetDrink(drink.IdDrink);
             var panel = new Panel(FormatDrinkString(drinkDetail))
                 .Border(BoxBorder.Rounded)
-                .Header(drinkDetail.strDrink);
+                .Header(drinkDetail.StrDrink);
 
             panel.Header.Centered();
             panel.BorderStyle(Color.Blue);
@@ -90,19 +90,19 @@ internal class DrinksController(DrinksService drinksService)
     private static string FormatDrinkString(DrinkDetail drink)
     {
         var formattedStr = $"""
-            {$"[{Styles.subtle}]Category[/] {drink.strCategory}"}
+            {$"[{Styles.subtle}]Category[/] {drink.StrCategory}"}
 
-            [{Styles.subtle}]Alcoholic:[/] [{Styles.warn}]{drink.strAlcoholic}[/] 
-            [{Styles.subtle}]Glass:[/] {drink.strGlass}      {(drink.strIBA is not null && drink.strIBA != "" ? $"[{Styles.subtle}]IBA:[/] {drink.strIBA}" : "")}
+            [{Styles.subtle}]Alcoholic:[/] [{Styles.warn}]{drink.StrAlcoholic}[/] 
+            [{Styles.subtle}]Glass:[/] {drink.StrGlass}      {(drink.StrIBA is not null && drink.StrIBA != "" ? $"[{Styles.subtle}]IBA:[/] {drink.StrIBA}" : "")}
 
-            [{Styles.subtle}]Instructions:[/] {drink.strInstructions}
+            [{Styles.subtle}]Instructions:[/] {drink.StrInstructions}
 
             """;
 
         for (var i = 1; i < 13; i++)
         {
-            var ingredientVal = drink.GetType().GetProperty($"strIngredient{i}").GetValue(drink);
-            var measureVal = drink.GetType().GetProperty($"strMeasure{i}").GetValue(drink);
+            var ingredientVal = drink.GetType().GetProperty($"StrIngredient{i}").GetValue(drink);
+            var measureVal = drink.GetType().GetProperty($"StrMeasure{i}").GetValue(drink);
 
             if (ingredientVal is not null && ingredientVal != "")
             {
@@ -112,7 +112,7 @@ internal class DrinksController(DrinksService drinksService)
             else { break; }
         }
 
-        formattedStr += $"\n[{Styles.subtle}]Date modified:[/] {drink.dateModified}";
+        formattedStr += $"\n[{Styles.subtle}]Date modified:[/] {drink.DateModified}";
         return formattedStr;
     }
 }

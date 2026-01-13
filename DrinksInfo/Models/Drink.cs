@@ -10,7 +10,9 @@ namespace DrinksInfo.Models
 
     public class Drink
     {
-        public string idDrink { get; set; } = "";
-        public string strDrink { get; set; } = "";
+        [JsonPropertyName("idDrink")]
+        public string IdDrink { get; set; } = "";
+        [JsonPropertyName("strDrink")]
+        public string StrDrink { get; set; } = "";
     }
 }

@@ -32,7 +32,7 @@ namespace DrinksInfo.Services
         internal async Task<List<Drink>> GetDrinksByCategory(Category category)
         {
             using var client = new HttpClient { BaseAddress = Url };
-            var response = await client.GetAsync($"filter.php?c={HttpUtility.UrlEncode(category.strCategory)}");
+            var response = await client.GetAsync($"filter.php?c={HttpUtility.UrlEncode(category.StrCategory)}");
             List<Drink> drinks = [];
 
             if (response.IsSuccessStatusCode)
