@@ -13,6 +13,7 @@ namespace DrinksInfo.Controllers;
 
 internal class DrinksController(DrinksService drinksService)
 {
+    //Logo credits: https://patorjk.com/
     private readonly string logo = "[blue]  ___  ___ ___ _  _ _  _____   ___ _  _ ___ ___  \r\n |   \\| _ \\_ _| \\| | |/ / __| |_ _| \\| | __/ _ \\ \r\n | |) |   /| || .` | ' <\\__ \\  | || .` | _| (_) |\r\n |___/|_|_\\___|_|\\_|_|\\_\\___/ |___|_|\\_|_| \\___/ \r\n                                                 [/]";
     internal readonly DrinksService _drinksService = drinksService;
 

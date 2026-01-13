@@ -61,25 +61,6 @@ namespace DrinksInfo.Services
                 var strResponse = await response.Content.ReadAsStringAsync();
                 var drink = JsonSerializer.Deserialize<DrinkDetailObject>(strResponse).DrinkDetailList;
                 return drink[0];
-                //List<object> prepList = new();
-                //string formattedName = "";
-                //foreach (PropertyInfo prop in drinkDetail.GetType().GetProperties())
-                //{
-
-                //    if (prop.Name.Contains("str"))
-                //    {
-                //        formattedName = prop.Name.Substring(3);
-                //    }
-
-                //    if (!string.IsNullOrEmpty(prop.GetValue(drinkDetail)?.ToString()))
-                //    {
-                //        prepList.Add(new
-                //        {
-                //            Key = formattedName,
-                //            Value = prop.GetValue(drinkDetail)
-                //        });
-                //    }
-                //}
             }
             else
             {
