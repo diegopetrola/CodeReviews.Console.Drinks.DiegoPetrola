@@ -6,7 +6,7 @@ namespace DrinksInfo;
 
 class Program
 {
-    static async Task Main(string[] args)
+    static async Task Main()
     {
         IServiceCollection services = new ServiceCollection();
         services.AddTransient<DrinksService>();

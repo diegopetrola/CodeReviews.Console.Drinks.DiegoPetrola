@@ -31,24 +31,22 @@ namespace DrinksInfo.Services
 
         internal async Task<List<Drink>> GetDrinksByCategory(Category category)
         {
+            using var client = new HttpClient { BaseAddress = Url };
+            var response = await client.GetAsync($"filter.php?c={HttpUtility.UrlEncode(category.strCategory)}");
+            List<Drink> drinks = [];
+
+            if (response.IsSuccessStatusCode)
             {
-                using var client = new HttpClient { BaseAddress = Url };
-                var response = await client.GetAsync($"filter.php?c={HttpUtility.UrlEncode(category.strCategory)}");
-                List<Drink> drinks = [];
+                string rawResponse = await response.Content.ReadAsStringAsync();
+                var serialize = JsonSerializer.Deserialize<Drinks>(rawResponse);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    string rawResponse = await response.Content.ReadAsStringAsync();
-                    var serialize = JsonSerializer.Deserialize<Drinks>(rawResponse);
-
-                    drinks = serialize!.DrinksList;
-                }
-                else
-                {
-                    throw new HttpRequestException("Error on the server, please try again in a few minutes");
-                }
-                return drinks;
+                drinks = serialize!.DrinksList;
             }
+            else
+            {
+                throw new HttpRequestException("Error on the server, please try again in a few minutes");
+            }
+            return drinks;
         }
 
         internal async Task<DrinkDetail> GetDrink(string drinkId)
