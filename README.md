@@ -14,7 +14,6 @@ It uses the [Cocktail Database API](https://www.thecocktaildb.com).
   - Category and alcoholic status
   - Ingredients with measurements
   - Preparation instructions
-  - Last modification date
 - **Error Handling**: Graceful error handling when the API is unavailable
 
 ## Prerequisites
