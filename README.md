@@ -24,7 +24,7 @@ It uses the [Cocktail Database API](https://www.thecocktaildb.com).
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/diegopetrola/CodeReviews.Console.Drinks.DiegoPetrola.git && cd CodeReviews.Console.Drinks.DiegoPetrola`
+1. Clone the repository: ```git clone https://github.com/diegopetrola/CodeReviews.Console.Drinks.DiegoPetrola.git && cd CodeReviews.Console.Drinks.DiegoPetrola```
 2. Restore dependencies: `dotnet restore`
 3. Build the project: `dotnet build`
 
