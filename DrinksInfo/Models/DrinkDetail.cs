@@ -20,7 +20,7 @@ namespace DrinksInfo.Models
         [JsonPropertyName("strCategory")]
         public string StrCategory { get; set; } = "";
         [JsonPropertyName("strIBA")]
-        public string StrIBA { get; set; } = "";
+        public string StrIba { get; set; } = "";
         [JsonPropertyName("strAlcoholic")]
         public string StrAlcoholic { get; set; } = "";
         [JsonPropertyName("strGlass")]
@@ -36,8 +36,8 @@ namespace DrinksInfo.Models
         [JsonPropertyName("strInstructionsIT")]
         public string StrInstructionsIT { get; set; } = "";
         [JsonPropertyName("strInstructionsZHHANS")]
-        public string StrInstructionsZHHANS { get; set; } = "";
-        [JsonPropertyName("strInstructionsZHHANT")]
+        public string StrInstructionsZhhans { get; set; } = "";
+        [JsonPropertyName("strInstructionsZhhant")]
         public string StrInstructionsZHHANT { get; set; } = "";
         [JsonPropertyName("strDrinkThumb")]
         public string StrDrinkThumb { get; set; } = "";
