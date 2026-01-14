@@ -37,8 +37,8 @@ namespace DrinksInfo.Models
         public string StrInstructionsIT { get; set; } = "";
         [JsonPropertyName("strInstructionsZHHANS")]
         public string StrInstructionsZhhans { get; set; } = "";
-        [JsonPropertyName("strInstructionsZhhant")]
-        public string StrInstructionsZHHANT { get; set; } = "";
+        [JsonPropertyName("strInstructionsZHHANT")]
+        public string StrInstructionsZhhant { get; set; } = "";
         [JsonPropertyName("strDrinkThumb")]
         public string StrDrinkThumb { get; set; } = "";
         [JsonPropertyName("strIngredient1")]
