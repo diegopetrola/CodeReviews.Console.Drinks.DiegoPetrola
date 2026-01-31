@@ -38,12 +38,6 @@ Run the application: `dotnet run`
 3. **Choose a Drink**: Browse drinks in the selected category and select one
 4. **View Details**: See complete information about the selected drink
 
-## Technologies Used
-
-- **Spectre.Console**
-- **.NET 10**
-- **C# 14.0**
-
 ## API Integration
 
 The application uses the [Cocktail Database API](https://www.thecocktaildb.com) to fetch drink categories,
