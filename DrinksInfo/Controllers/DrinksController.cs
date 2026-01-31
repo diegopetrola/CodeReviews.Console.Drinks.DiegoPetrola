@@ -36,7 +36,7 @@ internal class DrinksController(DrinksService drinksService)
         }
         catch (Exception e)
         {
-            AnsiConsole.MarkupLine($"[{Styles.error}]Something went wrong[/]: {e.Message}]");
+            AnsiConsole.MarkupLine($"[{Styles.error}]Something went wrong [/]: {e.Message}");
             Shared.AskForKey();
         }
     }
@@ -93,7 +93,8 @@ internal class DrinksController(DrinksService drinksService)
             {$"[{Styles.subtle}]Category[/] {drink.StrCategory}"}
 
             [{Styles.subtle}]Alcoholic:[/] [{Styles.warn}]{drink.StrAlcoholic}[/] 
-            [{Styles.subtle}]Glass:[/] {drink.StrGlass}      {(drink.StrIBA is not null && drink.StrIBA != "" ? $"[{Styles.subtle}]IBA:[/] {drink.StrIBA}" : "")}
+            [{Styles.subtle}]Glass:[/] {drink.StrGlass}      {(drink.StrIba is not null && drink.StrIba != "" ?
+                $"[{Styles.subtle}]IBA:[/] {drink.StrIba}" : "")}
 
             [{Styles.subtle}]Instructions:[/] {drink.StrInstructions}
 
@@ -104,10 +105,10 @@ internal class DrinksController(DrinksService drinksService)
             var ingredientVal = drink.GetType().GetProperty($"StrIngredient{i}").GetValue(drink);
             var measureVal = drink.GetType().GetProperty($"StrMeasure{i}").GetValue(drink);
 
-            if (ingredientVal is not null && ingredientVal != "")
+            if (ingredientVal is not null && ingredientVal.Equals(""))
             {
                 formattedStr += $"[{Styles.subtle}]Ingredient[/]: {ingredientVal}" +
-                    $"{(measureVal is not null && measureVal != "" ? $" — {measureVal}" : "")}\n";
+                    $"{(measureVal is not null && measureVal.Equals("") ? $" — {measureVal}" : "")}\n";
             }
             else { break; }
         }

@@ -4,35 +4,23 @@ using System.Web;
 
 namespace DrinksInfo.Services
 {
-    public class DrinksService
+    public class DrinksService(HttpClient httpClient)
     {
-        private readonly Uri Url = new Uri("http://www.thecocktaildb.com/api/json/v1/1/");
-        private readonly string GetCategoryUrl = "list.php?c=list";
 
         public async Task<List<Category>> GetCategories()
         {
-            using var client = new HttpClient { BaseAddress = Url };
+            var response = await httpClient.GetAsync("list.php?c=list");
 
-            var response = await client.GetAsync(GetCategoryUrl);
-            List<Category> categories = [];
-            if (response.IsSuccessStatusCode)
-            {
-                var rawResponse = response.Content;
-                var jsonText = await rawResponse.ReadAsStringAsync();
-                categories = JsonSerializer.Deserialize<Categories>(jsonText)!.CategoriesList;
-            }
-            else
-            {
-                throw new HttpRequestException("Error on the server, please try again in a few minutes");
-            }
+            if (!response.IsSuccessStatusCode)
+                throw new HttpRequestException("Error on the server, please try again later.");
 
-            return categories;
+            var jsonText = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Categories>(jsonText)!.CategoriesList;
         }
 
         internal async Task<List<Drink>> GetDrinksByCategory(Category category)
         {
-            using var client = new HttpClient { BaseAddress = Url };
-            var response = await client.GetAsync($"filter.php?c={HttpUtility.UrlEncode(category.StrCategory)}");
+            var response = await httpClient.GetAsync($"filter.php?c={HttpUtility.UrlEncode(category.StrCategory)}");
             List<Drink> drinks = [];
 
             if (response.IsSuccessStatusCode)
@@ -51,8 +39,7 @@ namespace DrinksInfo.Services
 
         internal async Task<DrinkDetail> GetDrink(string drinkId)
         {
-            var client = new HttpClient { BaseAddress = Url };
-            var response = await client.GetAsync($"lookup.php?i={drinkId}");
+            var response = await httpClient.GetAsync($"lookup.php?i={drinkId}");
 
             if (response.IsSuccessStatusCode)
             {
